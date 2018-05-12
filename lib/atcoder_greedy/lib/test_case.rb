@@ -6,9 +6,9 @@ require 'atcoder_greedy/lib/languages'
 class TestCase
   def initialize(problem_name)
     language = File.extname(problem_name)
-    if language.size == 0
+    if language.empty?
       language = '.' + AtcoderGreedy.config[:language]
-      problem_name = problem_name + language
+      problem_name += language
     end
     puts "Running a test for problem #{problem_name}..."
 
@@ -61,7 +61,7 @@ class TestCase
         myout_file.open
         result = Benchmark.realtime do
           unless my_solve.execute(@input[j].path, myout_file.path)
-            raise "Runtime Error"
+            raise 'Runtime Error'
           end
           @input[j].close
           myout_file.close(false)
@@ -69,13 +69,13 @@ class TestCase
 
         myout = myout_file.open.read
         myout_file.close
-        correct = File.open("#{@output[j].path}").read
+        correct = File.open(@output[j].path.to_s).read
         diffs = Diff::LCS.diff(myout, correct)
-        if diffs.size == 0
+        if diffs.empty?
           passed += 1
-          puts "-------------------- Testcase ##{j + 1} -------------------- PASSED! Time: #{sprintf("%.5f", result)}s"
+          puts "-------------------- Testcase ##{j + 1} -------------------- PASSED! Time: #{format('%.5f', result)}s"
         else
-          puts "-------------------- Testcase ##{j + 1} -------------------- FAILED! Time: #{sprintf("%.5f", result)}s"
+          puts "-------------------- Testcase ##{j + 1} -------------------- FAILED! Time: #{format('%.5f', result)}s"
           puts 'Your Output:'
           puts "#{myout}\n"
           puts 'Correct Answer:'
@@ -83,7 +83,7 @@ class TestCase
         end
       end
       puts "Test done. #{passed}/#{@input.size} passed."
-    rescue => e
+    rescue StandardError => e
       puts e
     end
   end
@@ -91,16 +91,16 @@ class TestCase
   # HACK: move to Languages
   def get_solve(solve_file)
     case File.extname(solve_file)
-      when '.rb'
-        Rb.new(solve_file)
-      when '.cpp'
-        Cpp.new(solve_file)
-      when '.c'
-        C.new(solve_file)
-      when '.hs'
-        Hs.new(solve_file)
-      else
-        raise 'Unknown Language'
+    when '.rb'
+      Rb.new(solve_file)
+    when '.cpp'
+      Cpp.new(solve_file)
+    when '.c'
+      C.new(solve_file)
+    when '.hs'
+      Hs.new(solve_file)
+    else
+      raise 'Unknown Language'
     end
   end
 end

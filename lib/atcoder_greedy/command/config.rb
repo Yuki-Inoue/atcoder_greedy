@@ -9,7 +9,7 @@ module AtcoderGreedy
     def config
       languages = Languages::ALL_LANGUAGES
       config_path = Dir.home + '/.atcoder_greedy'
-      if Dir.exists?(config_path)
+      if Dir.exist?(config_path)
         puts "Your current user_id is #{AtcoderGreedy.config[:user_id]} and current language is [#{AtcoderGreedy.config[:language]}]."
       else
         Dir.mkdir(config_path)
@@ -24,7 +24,7 @@ module AtcoderGreedy
         user_id = $stdin.gets.chomp!
         print 'Input your password: '
         password = $stdin.gets.chomp!
-        break if user_id.size == 0 || password.size == 0
+        break if user_id.empty? || password.empty?
 
         print 'Doing test login ...'
         response = nil
@@ -47,17 +47,17 @@ module AtcoderGreedy
 
       # language setting
       puts "Choose default language from: #{languages}"
-      print "Input languages: "
+      print 'Input languages: '
       loop do
         s = $stdin.gets.chomp!
         if languages.include?(s)
           AtcoderGreedy.configure(language: s)
           puts "Update Your default language to [#{AtcoderGreedy.config[:language]}]."
           break
-        elsif s.size == 0
+        elsif s.empty?
           break
         else
-          puts "Invalid language. please try again:"
+          puts 'Invalid language. please try again:'
         end
       end
     end

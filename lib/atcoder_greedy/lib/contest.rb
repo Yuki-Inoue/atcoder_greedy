@@ -8,11 +8,11 @@ class Contest
   attr_accessor :name, :url, :dir, :problems, :date
 
   def initialize(url, **options)
-    if options[:language] != ''
-      @language = options[:language]
-    else
-      @language = AtcoderGreedy.config[:language]
-    end
+    @language = if options[:language] != ''
+                  options[:language]
+                else
+                  AtcoderGreedy.config[:language]
+                end
     @url = url
 
     set_agent
@@ -76,12 +76,12 @@ class Contest
       params = doc.xpath('//pre')
       params.shift
       params.each_with_index do |p, i|
-        if i % 2 == 0
-          in_file.puts "-- Example #{i/2}"
-          in_file.puts "#{p.text.gsub(/\r\n?/, "\n").strip}"
+        if i.even?
+          in_file.puts "-- Example #{i / 2}"
+          in_file.puts p.text.gsub(/\r\n?/, "\n").strip.to_s
         else
-          in_file.puts "-- Answer #{(i-1)/2}"
-          in_file.puts "#{p.text.gsub(/\r\n?/, "\n").strip}"
+          in_file.puts "-- Answer #{(i - 1) / 2}"
+          in_file.puts p.text.gsub(/\r\n?/, "\n").strip.to_s
         end
       end
 
@@ -109,7 +109,7 @@ class Contest
       end
     end
 
-    @problems.each_with_index do |problem|
+    @problems.each do |problem|
       solve_file_content = solve_template.clone
       solve_file_content.gsub!(/DATE/, Time.now.strftime('%F'))
       solve_file_content.gsub!(/CONTEST/, @name.upcase)
@@ -127,7 +127,7 @@ class Contest
       FileUtils.mkdir(@name)
       @dir = "./#{@name}"
     else
-      if Dir.exists?(directory)
+      if Dir.exist?(directory)
         @dir = directory
       else
         raise "ERROR: Directory doesn't exists:#{@dir}"

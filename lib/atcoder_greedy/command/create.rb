@@ -15,11 +15,11 @@ module AtcoderGreedy
 
     def create(contest_url)
       user_options = {
-          no: {input: false, template: false},
-          problems: [],
-          directory: options[:select_directory],
-          language: options[:select_language],
-          template: options[:select_template]
+        no: { input: false, template: false },
+        problems: [],
+        directory: options[:select_directory],
+        language: options[:select_language],
+        template: options[:select_template]
       }
 
       user_options[:no][:input] = true if options[:no_input]
@@ -29,14 +29,14 @@ module AtcoderGreedy
       contest = Contest.new(contest_url, user_options)
       # TODO: contest_infoが存在したときの処理
       info = {
-          name: contest.name,
-          date: contest.date,
-          url: contest.url,
-          task: {}
+        name: contest.name,
+        date: contest.date,
+        url: contest.url,
+        task: {}
       }
       contest.problems.each do |p|
         info[:task][:"#{p[:name]}"] = {
-            id: p[:task_id]
+          id: p[:task_id]
         }
       end
       File.open("#{contest.dir}/.contest_info.yml", 'w') do |f|

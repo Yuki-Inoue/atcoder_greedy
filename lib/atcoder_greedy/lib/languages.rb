@@ -1,20 +1,20 @@
 class Languages
-  ALL_LANGUAGES = %w(rb cpp c hs)
+  ALL_LANGUAGES = %w[rb cpp c hs].freeze
   def initialize(solve_file)
     @solve_file = solve_file
   end
 
-  def compile(problem_name)
+  def compile(_problem_name)
     raise 'Error: Not Implemented'
   end
 
-  def execute(input_path, output_path)
+  def execute(_input_path, _output_path)
     raise 'Error: Not Implemented'
   end
 end
 
 class Rb < Languages
-  def compile(problem_name)
+  def compile(_problem_name)
     true
   end
 

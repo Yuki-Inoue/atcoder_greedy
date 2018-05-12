@@ -5,30 +5,30 @@ require 'yaml'
 require 'mechanize'
 require 'launchy'
 
-require "atcoder_greedy/version"
+require 'atcoder_greedy/version'
 require 'atcoder_greedy/command'
 
 module AtcoderGreedy
   # Configuration defaults
   @config = {
-      user_id: '',
-      password: '',
-      language: '',
-      default_template: {
-          rb: '',
-          cpp: '',
-          c: '',
-          py: '',
-          hs: ''
-      }
+    user_id: '',
+    password: '',
+    language: '',
+    default_template: {
+      rb: '',
+      cpp: '',
+      c: '',
+      py: '',
+      hs: ''
+    }
   }
 
-  @valid_languages = %w(rb cpp c py hs)
+  @valid_languages = %w[rb cpp c py hs]
   @valid_config_keys = @config.keys
 
   # Configure through hash
   def self.configure(opts = {})
-    self.config
+    config
     opts.each do |k, v|
       if v.is_a?(Hash)
         v.each do |ck, cv|
@@ -38,12 +38,12 @@ module AtcoderGreedy
         @config[k.to_sym] = v if @valid_config_keys.include? k.to_sym
       end
     end
-    self.save_config
+    save_config
   end
 
   def self.get_config_path
     config_path = Dir.home + '/.atcoder_greedy'
-    if Dir.exists?(config_path)
+    if Dir.exist?(config_path)
       config_path
     else
       raise "Can't find config directory. please init by command: 'atcoder_greedy config'.'"
@@ -62,7 +62,7 @@ module AtcoderGreedy
 
   def self.save_config
     yml_path = get_config_path + '/settings.yml'
-    if File.exists?(yml_path)
+    if File.exist?(yml_path)
       File.open(yml_path, 'w') { |f| YAML.dump(@config, f) }
     else
       raise "Can't find #{yml_path}. please set configure."

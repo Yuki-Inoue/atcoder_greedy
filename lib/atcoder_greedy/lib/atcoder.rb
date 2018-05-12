@@ -9,7 +9,7 @@ class Atcoder
 
   def login(url)
     print 'Login ... '
-    if AtcoderGreedy.config[:user_id].nil? || AtcoderGreedy.config[:user_id].size == 0
+    if AtcoderGreedy.config[:user_id].nil? || AtcoderGreedy.config[:user_id].empty?
       puts 'You still not set account info.'
       print 'Input User id: '
       user_id = $stdin.gets.chomp!
